@@ -3,12 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Главная страница</title>
+    <style>
+        .error { color: red; margin-top: 10px; }
+        .success { color: green; margin-top: 10px; font-weight: bold; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+    </style>
 </head>
 <body>
     <h1>Добро пожаловать на мой сайт!</h1>
     <p>Это главная страница моего проекта.</p>
     
-    <!-- Ссылка на вторую страницу -->
     <a href="about.html">Перейти на страницу "О мне"</a>
+
+    <hr style="margin: 20px 0;">
+
+    <h2>Форма обратной связи</h2>
+    <form id="feedbackForm">
+        <div class="form-group">
+            <label for="name">Имя:</label>
+            <input type="text" id="name" placeholder="Введите ваше имя">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="text" id="email" placeholder="example@mail.com">
+        </div>
+
+        <div class="form-group">
+            <label for="comment">Комментарий:</label>
+            <textarea id="comment" rows="4" placeholder="Напишите ваш комментарий"></textarea>
+        </div>
+
+        <button type="button" id="submitBtn">Отправить</button>
+    </form>
+
+    <!-- Блок для отображения ошибок или приветствия -->
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            // Получаем значения из полей ввода
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const comment = document.getElementById('comment').value.trim();
+            const messageDiv = document.getElementById('message');
+
+            // Регулярное выражение для проверки валидности email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            // Проверка 1: все ли поля заполнены
+            if (!name || !email || !comment) {
+                messageDiv.className = 'error';
+                messageDiv.textContent = 'Пожалуйста, заполните все поля формы!';
+                return;
+            }
+
+            // Проверка 2: валиден ли email
+            if (!emailRegex.test(email)) {
+                messageDiv.className = 'error';
+                messageDiv.textContent = 'Введите корректный адрес электронной почты (например, user@domain.com)!';
+                return;
+            }
+
+            // Если все проверки пройдены успешно
+            messageDiv.className = 'success';
+            messageDiv.innerHTML = `Привет, ${name}! Ваше сообщение с адреса ${email} успешно отправлено.`;
+        });
+    </script>
 </body>
 </html>
